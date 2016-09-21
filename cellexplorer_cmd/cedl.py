@@ -259,7 +259,6 @@ class StandardOutputWriter(object):
         x = numpy.c_[bbox['x']-sh, bbox["x"]+sh, bbox["x"]+sh, bbox["x"]-sh]
         y = numpy.c_[bbox['y']-sh, bbox["y"]-sh, bbox["y"]+sh, bbox["y"]+sh]
         
-        
         self.contours.resize_for(x)
         # manual 
         self.contours.dset[self.contours.offset:self.contours.offset+len(x), 0] = x
@@ -269,7 +268,6 @@ class StandardOutputWriter(object):
     def write_galleries(self, gals):
         self.gallery.inc_write(gals.transpose())
 
-        
     def write_features(self, data):
         if self.features is None:
             self.features = self.create_writer("features", self.data_grp, self.FEATURE_DTYPE)
@@ -279,8 +277,7 @@ class StandardOutputWriter(object):
         fg = self.data_grp.create_dataset("feature_groups", shape=(len(self.FEATURE_DTYPE),), dtype=[('feature', '|S64'), ('Simple1', '|S64')])
         fg['feature'] = zip(*self.FEATURE_DTYPE)[0]
         fg['Simple1'] = "Simple1"
-        
-        
+          
     def close(self):
         self.bbox.finalize()
         self.contours.finalize()
@@ -311,7 +308,6 @@ class Hdf5IncrementalCompoundWriter(object):
             data = data[:,0]
         
         self.dset[self.offset:self.offset+len(data)] = data
-        
         self.offset+=len(data)
         
     def finalize(self):
@@ -410,10 +406,14 @@ def predict(args):
         ae = Autoencoder.load(args.name)
     except Exception as e:
         logging.error("Error loading autoencoder {}".format(str(e)))
+        sys.exit("Error: Cellh5 file does not exist")
     
-    wr = StandardOutputWriter("test.h5")
+    output_file = "{}.h5".format(args.name)
+    logger.info("Init output writer -> {}".format(output_file))
+    wr = StandardOutputWriter(output_file)
     wr.FEATURE_DTYPE = [("ch1-deep_learning_feature_{}".format(dl), 'float32') for dl in xrange(ae.get_code_size())]
     
+    logger.info("Encode: (can take hours...)")
     encoder = Ch5Encoder(ae, cr, wr)
     encoder.run()
     
