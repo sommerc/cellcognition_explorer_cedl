@@ -1,24 +1,22 @@
 """
 """
-import lasagne
+
+import theano
 from theano import tensor as T
 
 import numpy
 import h5py
 
+import lasagne
 from lasagne.layers.noise import DropoutLayer
-from lasagne.layers import DenseLayer
+from lasagne.layers import Layer, DenseLayer
 from lasagne.layers import Conv2DLayer as Conv2DLayerSlow
 from lasagne.layers import MaxPool2DLayer as MaxPool2DLayerSlow
 from lasagne.layers.cuda_convnet import Conv2DCCLayer as Conv2DLayerFast
 from lasagne.layers.cuda_convnet import MaxPool2DCCLayer as MaxPool2DLayerFast
-
-from lasagne.nonlinearities import rectify, sigmoid, identity, softmax    
-
-import theano
-
 from lasagne import nonlinearities, init
-from lasagne.layers import Layer
+from lasagne.nonlinearities import rectify, sigmoid 
+
 
 class TransposedDenseLayer(lasagne.layers.DenseLayer):
 
