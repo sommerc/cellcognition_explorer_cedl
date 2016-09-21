@@ -14,35 +14,32 @@ import h5py
 import re
 
 from PIL import Image
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+# 
+# from skimage.util.montage import montage2d as mon
+# from sklearn.metrics.classification import confusion_matrix, classification_report
+# from sklearn.cross_validation import StratifiedShuffleSplit
+# from sklearn.decomposition.pca import PCA
 
-from skimage.util.montage import montage2d as mon
-from sklearn.metrics.classification import confusion_matrix, classification_report
-from sklearn.cross_validation import StratifiedShuffleSplit
-from sklearn.decomposition.pca import PCA
-
-import theano
-from theano import tensor as T
+# import theano
+# from theano import tensor as T
 import lasagne
-from lasagne.layers.noise import DropoutLayer, GaussianNoiseLayer
+from lasagne.layers.noise import DropoutLayer
 from lasagne.layers import get_output, InputLayer, DenseLayer, ReshapeLayer, Upscale2DLayer
-from lasagne.nonlinearities import rectify, leaky_rectify, tanh, sigmoid, identity, softmax
+# from lasagne.nonlinearities import rectify, leaky_rectify, tanh, sigmoid, identity, softmax
 from lasagne.updates import nesterov_momentum, adagrad
 from nolearn.lasagne import NeuralNet, BatchIterator, PrintLayerInfo, PrintLog
 from lasagne.layers import Conv2DLayer as Conv2DLayerSlow
-from lasagne.layers import MaxPool2DLayer as MaxPool2DLayerSlow
-from lasagne.layers import InverseLayer, NonlinearityLayer
+# from lasagne.layers import MaxPool2DLayer as MaxPool2DLayerSlow
+# from lasagne.layers import InverseLayer, NonlinearityLayer
 from lasagne.layers.cuda_convnet import Conv2DCCLayer as Conv2DLayerFast
 from lasagne.layers.cuda_convnet import MaxPool2DCCLayer as MaxPool2DLayerFast    
-from lasagne.regularization import apply_penalty, l1, l2
-from lasagne.layers import get_output
-from lasagne.objectives import squared_error, categorical_crossentropy
-from lasagne.updates import nesterov_momentum, sgd
 
-from utils import TransposedDenseLayer, load_hdf, act, pprint_layers, tile_raster_images, batch_norm
+from lasagne.objectives import squared_error#, categorical_crossentropy
+# from lasagne.updates import nesterov_momentum, sgd
 
-from cellh5apps.outlier.learner import OneClassMahalanobis, outlier_metrics, OneClassSVM_SKL
-from __builtin__ import hasattr
+from utils import TransposedDenseLayer, act, pprint_layers, tile_raster_images
+
 
 class Autoencoder(object):
     """
@@ -175,7 +172,9 @@ class Autoencoder(object):
     
     @staticmethod
     def load(name):
-        with open(os.path.join(name, '_model.pickle'), 'rb') as f:
+        m_file = os.path.join(name, '_model.pickle')
+        if not os.path.isfile(m_file): raise(IOError("Autoencoder model file does not exist: {}".format(m_file)))
+        with open(m_file, 'rb') as f:
             inst = pickle.load(f)       
         inst._nn.on_epoch_finished=[PrintLog()] 
         return inst

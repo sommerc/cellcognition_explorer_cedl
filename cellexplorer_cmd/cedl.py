@@ -51,7 +51,7 @@ train_parser.add_argument('--neg_indicator', '-nd' , type=str, help='The token, 
 
 
 predict_parser = subparsers.add_parser('encode', help='Encode image data (in cellh5) using a previously trained autoencoder. Result can be viewed and further analyzed using the CellExplorer GUI.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-predict_parser.set_defaults(action="predict")
+predict_parser.set_defaults(action="encode")
 
 predict_parser.add_argument('name', help='Name of the trained network (generated with option "train"' )
 predict_parser.add_argument('cellh5_input', help='The cellh5 file as input for feature generation using an autoencoder.')
@@ -62,7 +62,6 @@ predict_parser.add_argument('cellh5_mapping', help='Position mapping table (.txt
 class BaseReader(object):
     @staticmethod
     def normalize_galleries(gals):
-        logger.debug("  Normalize galleries")
         return gals.astype(numpy.float32) / 255.
     
     def write_galleriy_file(self, gals):
@@ -244,17 +243,6 @@ class StandardOutputWriter(object):
         # not yet initializable
         self.features = None
         
-#         self._fh.create_group("settings").create_dataset("segmentation", data='''<config primary_segmentation="Channel_2" active_channels="Channel_2">
-#   <Channel_2 color="#ffffff">
-#     <segmentation mask="AdaptiveThreshold" median_radius="1" window_size="14" threshold="1" remove_borderobjects="True" fill_holes="True" norm_min="-0.0" norm_max="11651.0" size_min="200" size_max="-1" intensity_min="20" intensity_max="-1" gallery_size="115" use_watershed="True" seeding_size="14" zprojection="0" zslice="0" outline_smoothing="2"/>
-#     <feature_groups distance="None" circularity="None" convexhull="None" haralick2="1 2 4 8" roisize="None" axes="None" irregularity2="None" moments="None" levelset="None" haralick="1 2 4 8" granulometry="1 2 3 5 7" normbase2="None" irregularity="None" normbase="None"/>
-#   </Channel_2>
-#   <Channel_1 color="#55ff00">
-#     <segmentation mask="Expand" range="1 5" norm_min="0.0" norm_max="28588.0"/>
-#     <feature_groups distance="None" circularity="None" convexhull="None" haralick2="1 2 4 8" roisize="None" axes="None" irregularity2="None" moments="None" levelset="None" haralick="1 2 4 8" granulometry="1 2 3 5 7" normbase2="None" irregularity="None" normbase="None"/>
-#   </Channel_1>
-# </config>''')
-#         self._fh.create_group("classifiers")
     
     def create_writer(self, name, grp, dtype, kind='c', shape=None, grow_dim=0):
         if kind == "c":    
@@ -292,7 +280,6 @@ class StandardOutputWriter(object):
         fg['feature'] = zip(*self.FEATURE_DTYPE)[0]
         fg['Simple1'] = "Simple1"
         
-        print fg
         
     def close(self):
         self.bbox.finalize()
@@ -302,7 +289,7 @@ class StandardOutputWriter(object):
         try:
             self._fh.close()
         except Exception as e:
-            pass
+            logger.warn("Error: Problem closing file handle: {}".format(str(e)))
         
 class Hdf5IncrementalCompoundWriter(object):
     init_size = 1000    
@@ -366,11 +353,7 @@ class Hdf5IncrementalArrayWriter(object):
         self.dset[tuple(index)] = data
         
         self.offset+=data.shape[self.grow_dim]
-
     
-
-        
-        
         
 def train(args):
     name = "{}_{}".format(os.path.splitext(os.path.basename(args.cellh5_input))[0], args.ae_arch) 
@@ -419,9 +402,14 @@ def train(args):
 
 def predict(args):
     logger.info("Init reader")
-    
     cr = Cellh5Reader(args.name, args)
-    ae = Autoencoder.load(args.name)
+    
+    
+    logger.info("Read autoencoder model")
+    try:
+        ae = Autoencoder.load(args.name)
+    except Exception as e:
+        logging.error("Error loading autoencoder {}".format(str(e)))
     
     wr = StandardOutputWriter("test.h5")
     wr.FEATURE_DTYPE = [("ch1-deep_learning_feature_{}".format(dl), 'float32') for dl in xrange(ae.get_code_size())]
@@ -450,10 +438,12 @@ def main(args):
 
 
 if __name__ == '__main__':
-#     args = parser.parse_args("-is 40 -v train -l nesterov  H:/matthias_predrug_a8/Screen_Plate_01_all_positions_with_data.ch5 H:/matthias_predrug_a8/Screen_Plate_01_position_map_PRE.txt  ".split())
-#     args = parser.parse_args("-is 40 --verbose encode Screen_Plate_01_all_positions_with_data_d144.0s  H:/matthias_predrug_a8/Screen_Plate_01_all_positions_with_data.ch5 H:/matthias_predrug_a8/Screen_Plate_01_position_map_PRE_short.txt  ".split())
-
+    args = parser.parse_args("-is 40 --verbose train -l nesterov  H:/matthias_predrug_a8/Screen_Plate_01_all_positions_with_data.ch5 H:/matthias_predrug_a8/Screen_Plate_01_position_map_PRE.txt  ".split())
+    main(args)
+    
+    args = parser.parse_args("-is 40 --verbose encode Screen_Plate_01_all_positions_with_data_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s  H:/matthias_predrug_a8/Screen_Plate_01_all_positions_with_data.ch5 H:/matthias_predrug_a8/Screen_Plate_01_position_map_PRE_short2.txt  ".split())
+    main(args)
 #     args = parser.parse_args("--help".split())
-    args = parser.parse_args("train --help".split())
-    args = parser.parse_args("encode --help".split())
-#     main(args)
+#     args = parser.parse_args("train --help".split())
+#     args = parser.parse_args("encode --help".split())
+    
