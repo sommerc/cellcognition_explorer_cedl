@@ -12,13 +12,13 @@ To run cedl.py, please unzip the demo data
 into the "data" folder of the cedl command-line tool.
  
 ## Help pages
-
+```
 $ python cedl.py --help
 
 $ python cedl.py train --help
 
 $ python cedl.py encode --help
- 
+``` 
  
 ## Training
 
