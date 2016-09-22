@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+CellCognition Explorer - deep learning command-line extension
+'''
+
 import os
 import sys
 
@@ -14,7 +19,7 @@ from autoencoders import Autoencoder, AdaGradTrainer, NestorovTrainer
 
 import argparse
 
-version = (0, 9, 0)
+version = (1, 0, 0)
 
 parser = argparse.ArgumentParser(prog="CellExplorer deep learning command line extension", version="{}.{}.{}".format(*version), formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--verbose', action='store_true', help='verbose output', dest='loglevel')
@@ -441,12 +446,6 @@ def main(args):
 
 
 if __name__ == '__main__':
-#     args = parser.parse_args("-is 60 --verbose train -l nesterov  H:/matthias_predrug_a8/Screen_Plate_01_all_positions_with_data.ch5 H:/matthias_predrug_a8/Screen_Plate_01_position_map_PRE.txt  ".split())
-#     main(args)
-#     
-#     args = parser.parse_args("-is 60 --verbose encode Screen_Plate_01_all_positions_with_data_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s  H:/matthias_predrug_a8/Screen_Plate_01_all_positions_with_data.ch5 H:/matthias_predrug_a8/Screen_Plate_01_position_map_PRE_short2.txt  ".split())
     main(parser.parse_args())
-#     args = parser.parse_args("--help".split())
-#     args = parser.parse_args("train --help".split())
-#     args = parser.parse_args("encode --help".split())
+
     
