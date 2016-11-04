@@ -31,12 +31,12 @@ This will create an deep learning autoencoder model called "CecogExCedlDemo_plat
 
 ## Encoding
 ```
-$ python cedl.py --im_size 60 --verbose encode CecogExCedlDemo_plate_1_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s ../data/CecogExCedlDemo_plate_1.ch5 ../data/CecogExCedlDemo_plate_1_mapping_encode.txt
+$ python cedl.py --im_size 60 --verbose encode CecogExCedlDemo_plate_1_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s ../data/CecogExCedlDemo_plate_1.ch5 ../data/CecogExCedlDemo_plate_1_mapping_encode.txt
 ```
-Will create `"CecogExCedlDemo_plate_1_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s.hdf"`
+Will create `"CecogExCedlDemo_plate_1_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s.hdf"`
 
 ## Visualization and Novelty detection
 
-Open CellCognition Explorer GUI load `"CecogExCedlDemo_plate_1_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s.hdf"`
+Open CellCognition Explorer GUI load `"CecogExCedlDemo_plate_1_c16.5r_p2_c32.3r_p2_d256.1r_d64.0s.hdf"`
  
 
