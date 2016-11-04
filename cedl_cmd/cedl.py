@@ -398,9 +398,6 @@ def train(args):
     
     logger.info("Save deep learning network as '{}' (use this for encode)".format(name))
     ae.save()
-    
-    
-    
 
 def predict(args):
     logger.info("Init reader")
@@ -428,22 +425,14 @@ def predict(args):
     
     logger.info("Output file created. Open CellCognition Explorer GUI and open '{}'".format(output_file))
     
-    
-    
-
-        
-    
 def main(args):
     logging.basicConfig(level=args.loglevel or logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-       
     if args.action == "train":         
         train(args)
     elif args.action == "encode":
-        predict(args)
-    
+        predict(args)    
     logger.debug(" --- The End ---")
     
-
 
 if __name__ == '__main__':
     main(parser.parse_args())

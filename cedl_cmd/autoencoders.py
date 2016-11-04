@@ -52,7 +52,7 @@ class Autoencoder(object):
     
     def init_from_string(self, arch_string):
         self.check_arch_string(arch_string)
-        self.set_output_dir(self.name + "_" + "_".join(arch_string.split()))
+        self.set_output_dir(self.name)
 
         self.input_layer = InputLayer(shape=(None,)+ self.input_shape, name='input')
         
