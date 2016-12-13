@@ -19,7 +19,7 @@ from autoencoders import Autoencoder, AdaGradTrainer, NestorovTrainer
 
 import argparse
 
-version = (1, 0, 0)
+version = (1, 0, 1)
 
 parser = argparse.ArgumentParser(prog="CellExplorer deep learning command line extension", version="{}.{}.{}".format(*version), formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--verbose', action='store_true', help='verbose output', dest='loglevel')

@@ -14,9 +14,14 @@ import lasagne
 from lasagne.layers.noise import DropoutLayer
 from lasagne.layers import get_output, InputLayer, DenseLayer, ReshapeLayer, Upscale2DLayer
 from nolearn.lasagne import NeuralNet, BatchIterator, PrintLayerInfo, PrintLog
-from lasagne.layers import Conv2DLayer as Conv2DLayerSlow
-from lasagne.layers.cuda_convnet import Conv2DCCLayer as Conv2DLayerFast
-from lasagne.layers.cuda_convnet import MaxPool2DCCLayer as MaxPool2DLayerFast    
+from lasagne.layers import Conv2DLayer, MaxPool2DLayer
+try:
+    from lasagne.layers.cuda_convnet import Conv2DCCLayer as Conv2DLayerFast
+    from lasagne.layers.cuda_convnet import MaxPool2DCCLayer as MaxPool2DLayerFast 
+except:
+    Conv2DLayerFast = Conv2DLayer
+    MaxPool2DLayerFast = MaxPool2DLayer
+    
 from lasagne.objectives import squared_error
 from lasagne.updates import nesterov_momentum, adagrad
 
