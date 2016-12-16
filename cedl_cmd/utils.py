@@ -117,13 +117,16 @@ def pprint_layers(lyr):
         
     aux = ""
     
-    if isinstance(lyr, (Conv2DLayerFast, Conv2DLayerSlow)):
+    if isinstance(lyr, (Conv2DLayerFast, Conv2DLayer)):
         if isinstance(lyr.filter_size, int):
             fs = lyr.filter_size
         else:
             fs = lyr.filter_size[0] 
         aux = "%2d filters: %dx%d" % (lyr.num_filters, fs, fs)
-    elif isinstance(lyr, (MaxPool2DLayerFast, MaxPool2DLayerSlow)):
+    elif isinstance(lyr, (MaxPool2DLayer)):
+        aux = "pool size: %dx%d" % lyr.pool_size
+        #aux = "pool size: %dx%d" % (lyr.pool_size, lyr.pool_size)
+    elif isinstance(lyr, (MaxPool2DLayerFast,)):
         aux = "pool size: %dx%d" % (lyr.pool_size, lyr.pool_size)
     elif isinstance(lyr, (DropoutLayer,)):
         aux = "drop prob.: %2.2f" % lyr.p

@@ -21,46 +21,7 @@ import argparse
 
 version = (1, 0, 1)
 
-parser = argparse.ArgumentParser(prog="CellExplorer deep learning command line extension", version="{}.{}.{}".format(*version), formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--verbose', action='store_true', help='verbose output', dest='loglevel')
 
-parser.add_argument('--im_size', '-is', type=int, help='Size of the squared, cropped input images (in pixel)', default=60)    
-
-subparsers = parser.add_subparsers()
-
-train_parser   = subparsers.add_parser('train', help='Train a deep learning autoencoder from pre-processed image data stored in cellh5.',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-train_parser.set_defaults(action="train")
-
-
-train_parser.add_argument('cellh5_input', help='The cellh5 file as input for training an autoencoder.')
-train_parser.add_argument('cellh5_mapping', help='Position mapping table (.txt file) with a "Group" Column to '
-                                                 'indicate negative control conditions.' )
-train_parser.add_argument('--autoencoder_architecture', '-ae', help='String describing the encoding layers of the autoencoder.\n'
-                                                                    'Three layer types are supported:'
-                                                                    '"cF.SA": convolutional layer with F filters of size SxS and activation A (A=r or A=s), '
-                                                                    '"pP" max-pooling layer with pooling size of PxP\n, and '
-                                                                    '"dN.D" fully-connected dense layer with output size N and additional drop-out layer with probability 0.D. '
-                                                                    'Deep autoencoders can be constructed by concatenating layers with "_"'
-                          
-                          , default='c16.5r_p2_c32.3r_p2_d256.1r_d64.0s', dest='ae_arch')
-
-train_parser.add_argument('--learner', '-l', choices=['nesterov', 'adagrad'], help='SGD variant. Choose between Nesterov momentum and AdaGrad updates.', default='addgrad')
-train_parser.add_argument('--learning_rate', '-lr', type=float, help='Learning rate', default=0.05)
-train_parser.add_argument('--momentum', '-m', type=float, help='Momentum for Nestorov updates', default=0.9)
-train_parser.add_argument('--batchsize', '-bs' , type=int, help='Mini-batch size', default=128)
-train_parser.add_argument('--corruption', '-c' , type=float, help='Initial corruption level of the denoising autoencoder', default=0.0)
-train_parser.add_argument('--epochs', '-e' , type=int, help='Number of training epochs', default=16)
-train_parser.add_argument('--nsamples', '-n' , type=int, help='The number of instances randomly sampled from negative control conditions', default=1000)
-train_parser.add_argument('--neg_indicator', '-nd' , type=str, help='The token, which indicates a negative control condition in the mapping file', default='neg', dest='neg_condition')                                                 
-
-
-
-predict_parser = subparsers.add_parser('encode', help='Encode image data (in cellh5) using a previously trained autoencoder. Result can be viewed and further analyzed using the CellExplorer GUI.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-predict_parser.set_defaults(action="encode")
-
-predict_parser.add_argument('name', help='Name of the trained network (generated with option "train"' )
-predict_parser.add_argument('cellh5_input', help='The cellh5 file as input for feature generation using an autoencoder.')
-predict_parser.add_argument('cellh5_mapping', help='Position mapping table (.txt file), which contains all positions to be processed' )
 
 
 
@@ -355,10 +316,12 @@ class Hdf5IncrementalArrayWriter(object):
         self.dset[tuple(index)] = data
         
         self.offset+=data.shape[self.grow_dim]
-    
+
+def get_model_name(ch5_input, model_arch):
+    return "{}_{}".format(os.path.splitext(os.path.basename(ch5_input))[0], model_arch)
         
 def train(args):
-    name = "{}_{}".format(os.path.splitext(os.path.basename(args.cellh5_input))[0], args.ae_arch) 
+    name =  get_model_name(args.cellh5_input, args.ae_arch)
     logger.info("Training: '{}'".format(name))
     
     logger.info("Init reader")
@@ -399,6 +362,7 @@ def train(args):
     logger.info("Save deep learning network as '{}' (use this for encode)".format(name))
     ae.save()
 
+
 def predict(args):
     logger.info("Init reader")
     cr = Cellh5Reader(args.name, args)
@@ -435,6 +399,49 @@ def main(args):
     
 
 if __name__ == '__main__':
+    logger.info("test")
+    parser = argparse.ArgumentParser(prog="CellExplorer deep learning command line extension", version="{}.{}.{}".format(*version), formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--verbose', action='store_true', help='verbose output', dest='loglevel')
+    
+    parser.add_argument('--im_size', '-is', type=int, help='Size of the squared, cropped input images (in pixel)', default=60)    
+    
+    subparsers = parser.add_subparsers()
+    
+    train_parser   = subparsers.add_parser('train', help='Train a deep learning autoencoder from pre-processed image data stored in cellh5.',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    train_parser.set_defaults(action="train")
+    
+    
+    train_parser.add_argument('cellh5_input', help='The cellh5 file as input for training an autoencoder.')
+    train_parser.add_argument('cellh5_mapping', help='Position mapping table (.txt file) with a "Group" Column to '
+                                                     'indicate negative control conditions.' )
+    train_parser.add_argument('--autoencoder_architecture', '-ae', help='String describing the encoding layers of the autoencoder.\n'
+                                                                        'Three layer types are supported:'
+                                                                        '"cF.SA": convolutional layer with F filters of size SxS and activation A (A=r or A=s), '
+                                                                        '"pP" max-pooling layer with pooling size of PxP\n, and '
+                                                                        '"dN.D" fully-connected dense layer with output size N and additional drop-out layer with probability 0.D. '
+                                                                        'Deep autoencoders can be constructed by concatenating layers with "_"'
+                              
+                              , default='c16.5r_p2_c32.3r_p2_d256.1r_d64.0s', dest='ae_arch')
+    
+    train_parser.add_argument('--learner', '-l', choices=['nesterov', 'adagrad'], help='SGD variant. Choose between Nesterov momentum and AdaGrad updates.', default='addgrad')
+    train_parser.add_argument('--learning_rate', '-lr', type=float, help='Learning rate', default=0.05)
+    train_parser.add_argument('--momentum', '-m', type=float, help='Momentum for Nestorov updates', default=0.9)
+    train_parser.add_argument('--batchsize', '-bs' , type=int, help='Mini-batch size', default=128)
+    train_parser.add_argument('--corruption', '-c' , type=float, help='Initial corruption level of the denoising autoencoder', default=0.0)
+    train_parser.add_argument('--epochs', '-e' , type=int, help='Number of training epochs', default=16)
+    train_parser.add_argument('--nsamples', '-n' , type=int, help='The number of instances randomly sampled from negative control conditions', default=1000)
+    train_parser.add_argument('--neg_indicator', '-nd' , type=str, help='The token, which indicates a negative control condition in the mapping file', default='neg', dest='neg_condition')                                                 
+    
+    
+    
+    predict_parser = subparsers.add_parser('encode', help='Encode image data (in cellh5) using a previously trained autoencoder. Result can be viewed and further analyzed using the CellExplorer GUI.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    predict_parser.set_defaults(action="encode")
+    
+    predict_parser.add_argument('name', help='Name of the trained network (generated with option "train"' )
+    predict_parser.add_argument('cellh5_input', help='The cellh5 file as input for feature generation using an autoencoder.')
+    predict_parser.add_argument('cellh5_mapping', help='Position mapping table (.txt file), which contains all positions to be processed' )
+    
+    
     main(parser.parse_args())
 
     

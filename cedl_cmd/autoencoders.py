@@ -93,7 +93,8 @@ class Autoencoder(object):
         # Decoder
         for lyr in self._layers[::-1][:-1]:
             if isinstance(lyr, (Conv2DLayerFast,)):
-                net = Conv2DLayerFast(net, num_filters=lyr.input_layer.output_shape[1], filter_size=(lyr.filter_size,lyr.filter_size), nonlinearity=lyr.nonlinearity, pad='same' )
+                #net = Conv2DLayerFast(net, num_filters=lyr.input_layer.output_shape[1], filter_size=(lyr.filter_size, lyr.filter_size), nonlinearity=lyr.nonlinearity, pad='same' )
+                net = Conv2DLayerFast(net, num_filters=lyr.input_layer.output_shape[1], filter_size=lyr.filter_size, nonlinearity=lyr.nonlinearity, pad='same' )
                 
             elif isinstance(lyr, (MaxPool2DLayerFast,)):
                 if len(net.output_shape) == 2:
@@ -107,11 +108,12 @@ class Autoencoder(object):
                 
         lyr = self._layers[0]
         if isinstance(lyr, (Conv2DLayerFast,)):
-            net = Conv2DLayerSlow(net, num_filters=self.n_channel, filter_size=(lyr.filter_size, lyr.filter_size), nonlinearity=lyr.nonlinearity, pad='same' )
+            #net = Conv2DLayer(net, num_filters=self.n_channel, filter_size=(lyr.filter_size, lyr.filter_size), nonlinearity=lyr.nonlinearity, pad='same' )
+            net = Conv2DLayer(net, num_filters=self.n_channel, filter_size=lyr.filter_size, nonlinearity=lyr.nonlinearity, pad='same' )
             
         elif isinstance(lyr, (MaxPool2DLayerFast,)):
             channels = 1
-            if len(net.output_shape) == 2 and isinstance(lyr.input_layer, (Conv2DLayerFast, Conv2DLayerSlow)):
+            if len(net.output_shape) == 2 and isinstance(lyr.input_layer, (Conv2DLayerFast, Conv2DLayer)):
                 channels = lyr.input_layer.num_filters
             net = ReshapeLayer(net, shape=([0], channels, self.middle_pool_size, self.middle_pool_size))
             
