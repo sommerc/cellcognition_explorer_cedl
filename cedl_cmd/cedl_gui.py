@@ -53,7 +53,7 @@ class MyWindow(QtGui.QMainWindow):
     def setup_logging(self):
         self.handler = QHandler(self)
         self.handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
+        formatter = logging.Formatter('%(levelname)-8s\t%(message)s')
         self.handler.setFormatter(formatter)
         self.handler.messageReceived.connect(self.showMessage)
         
@@ -61,7 +61,8 @@ class MyWindow(QtGui.QMainWindow):
         
         textedit = self.log_widget
         textedit.setReadOnly(True)
-        textedit.setMaximumBlockCount(20)
+        textedit.setMaximumBlockCount(0)
+        textedit.setCenterOnScroll(True)
         format_ = QtGui.QTextCharFormat()
         format_.setFontFixedPitch(True)
         textedit.setCurrentCharFormat(format_)
@@ -121,8 +122,6 @@ class MyWindow(QtGui.QMainWindow):
         
         
     def start_training(self):
-        
-        
         targs = cedl.argparse.Namespace()
         
         targs.cellh5_input = str(self.ch5_input_train.text())
@@ -130,7 +129,6 @@ class MyWindow(QtGui.QMainWindow):
         targs.im_size = self.bbox_size.value()
         
         targs.ae_arch = str(self.autoencoder_architecture.text())
-        
         
         targs.learning_rate = self.learning_rate.value()
         targs.momentum = self.momentum.value()
@@ -140,24 +138,39 @@ class MyWindow(QtGui.QMainWindow):
         targs.corruption = self.corruption.value()
         targs.learner = str(self.learner.currentText()).lower()
         
-
         targs.neg_condition = str(self.neg_indicator.text())
         
-        
         self.pb_start_training.setEnabled(False)
+        self.pb_start_encode.setEnabled(False)
         self.train_thread = FuncThread(cedl.train, self.finalize_train, targs)
         self.train_thread.start()
 
     def finalize_train(self):
         logger.info("\nTraining finished\n*********************\n")
         self.pb_start_training.setEnabled(True)
+        self.pb_start_encode.setEnabled(True)
         
         self.ch5_input_encode.setText(self.ch5_input_train.text())
         self.plate_mapping_encode.setText(self.plate_mapping_train.text())
         self.autoencoder_model.setText(cedl.get_model_name(str(self.ch5_input_train.text()), str(self.autoencoder_architecture.text())))
+        
+    def finalize_encode(self):
+        logger.info("\nFeature encoding finished\n*********************\n")
+        self.pb_start_encode.setEnabled(True)
+        self.pb_start_training.setEnabled(True)
 
     def start_encode(self):
-        pass
+        eargs = cedl.argparse.Namespace()
+        
+        eargs.name = str(self.autoencoder_model.text())
+        eargs.cellh5_input = str(self.ch5_input_encode.text())
+        eargs.cellh5_mapping = str(self.plate_mapping_encode.text())
+        eargs.im_size = self.bbox_size.value()
+        
+        self.pb_start_encode.setEnabled(False)
+        self.pb_start_training.setEnabled(False)
+        self.train_thread = FuncThread(cedl.predict, self.finalize_encode, eargs)
+        self.train_thread.start()
         
     
     def check_training_params(self, t_params):
