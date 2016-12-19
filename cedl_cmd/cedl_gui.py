@@ -44,6 +44,8 @@ class MyWindow(QtGui.QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         uic.loadUi('C:/Users/sommerc/Documents/cedlGUI/cedlguimain.ui', self)
+        self.setWindowIcon(QtGui.QIcon("cecog_explorer_icon_128x128.png"))
+        self.setWindowTitle("CellCogniton Explorer - Deep Learning for Features GUI")
         
         self.make_connections()
         self.setup_logging()
@@ -80,6 +82,8 @@ class MyWindow(QtGui.QMainWindow):
         
         self.pb_start_training.clicked.connect(self.start_training)
         self.pb_start_encode.clicked.connect(self.start_encode)
+        
+        self.architecture_help.clicked.connect(self.show_architecture_help)
     
     def showMessage(self, msg, level=None, name=None):
         
@@ -175,6 +179,54 @@ class MyWindow(QtGui.QMainWindow):
     
     def check_training_params(self, t_params):
         pass
+    
+    def show_architecture_help(self):
+        QtGui.QMessageBox.information(self, "Autoencoder architecture", 
+"""<html><body>
+<p>
+The encoding part of the autoencoder is defined by a sequence of network layers. The following layer
+types are supported and the layout is defined by a sequence of layer types separated by "_". The decoding 
+part is generated automatically by mirroring the specified encoder part</p> 
+
+<p>
+<b>Convolutional layer:</b> cNF.FSAF
+<ul>
+    <li>NF: Number of convolutional filters</li>
+    <li>FS: Filter size in pixel</li>
+    <li>AF: Filter activation function represented by s for sigmoid or r linear rectifier</li>
+</ul>
+</p>
+<p> 
+<i>Example</i> c32.3r: a convolutional layer with 32 filters each of size 3x3 followed by linear rectifier activation
+</p>
+
+<p>
+<b>Pooling layer:</b> pNP
+<ul>
+    <li>NP: The max-pooling size in pixel represented by an integer 
+    </li>
+</ul>
+</p>
+<p>
+<i>Example</i> p2: a pooling layer with pooling size 2x2
+</p> 
+
+<p>
+<b>Dense layer:</b> dNN.DPAF
+<ul>
+    <li> NN: Output size given by the number of neurons</li>
+    <li>DP: Additional drop-out layer with drop-out probability of 0.DP</li>
+    <li>AF: Filter activation function represented by s for sigmoid or r linear rectifier</li>
+</ul>
+</p>
+<p> 
+<i>Example</i> d64.1s: a dense layer of output size 64 and a drop-out layer with chance of 10% to corrupt a random output. The final activation is a sigmoid funciton
+</p>
+<br/>
+
+
+</body></html>
+""")
     
 
 if __name__ == '__main__':
