@@ -43,7 +43,7 @@ class QHandler(QObject, logging.Handler):
 class MyWindow(QtGui.QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
-        uic.loadUi('C:/Users/sommerc/Documents/cedlGUI/cedlguimain.ui', self)
+        uic.loadUi('cedlguimain.ui', self)
         self.setWindowIcon(QtGui.QIcon("cecog_explorer_icon_128x128.png"))
         self.setWindowTitle("CellCogniton Explorer - Deep Learning for Features GUI")
         
