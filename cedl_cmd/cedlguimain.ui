@@ -48,7 +48,7 @@
         <item>
          <widget class="QLineEdit" name="plate_mapping_train">
           <property name="text">
-           <string>data/CecogExCedlDemo_plate_subset.txt</string>
+           <string>CecogExCedlDemo_plate_subset.txt</string>
           </property>
          </widget>
         </item>
@@ -85,7 +85,7 @@
         <item>
          <widget class="QLineEdit" name="ch5_input_train">
           <property name="text">
-           <string>data/CecogExCedlDemo_plate_subset.ch5</string>
+           <string>CecogExCedlDemo_plate_subset.ch5</string>
           </property>
          </widget>
         </item>
