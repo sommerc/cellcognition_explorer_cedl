@@ -54,6 +54,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pb_plate_mapping_train">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the positions from which training samples should be choosen. This file contains also meta information about your experiment and has the following column headers.&lt;/p&gt;&lt;p&gt;Position, Well, Site, Row, Column, Gene Symbol, siRNA ID, and Group&lt;/p&gt;&lt;p&gt;Use the Group column to indicate negative controls, e.g. by 'neg'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Browse</string>
           </property>
@@ -91,6 +94,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pb_ch5_input_train">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose an CellH5 file to process, which contians the image data from which features are learned by deep learning autoencoders.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Browse</string>
           </property>
@@ -121,6 +127,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <widget class="QSpinBox" name="bbox_size">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The width and height of the square images which are cut out for every cell for training.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="minimum">
            <number>16</number>
           </property>
@@ -170,6 +179,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="QComboBox" name="learner">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The stochastic gradient descent algorithm for training the autoencoder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <item>
            <property name="text">
             <string>AdaGrad</string>
@@ -219,6 +231,9 @@
             <width>40</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How to design the layout of an autoencoder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>?</string>
@@ -289,6 +304,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QDoubleSpinBox" name="momentum">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The momentum weight for the Nesterov algorithm. Not used for AdaGrad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="maximum">
            <double>1.000000000000000</double>
           </property>
@@ -325,6 +343,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="QSpinBox" name="batchsize">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The batch size for the training. Note, values below 16 lead to very long training times and poor convergence.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="minimum">
            <number>4</number>
           </property>
@@ -361,6 +382,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
          <widget class="QDoubleSpinBox" name="corruption">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional initial corruption factor for the images.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="maximum">
            <double>1.000000000000000</double>
           </property>
@@ -394,6 +418,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QSpinBox" name="epochs">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of training epochs. Choose at least 16.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -430,6 +457,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
          <widget class="QSpinBox" name="nsamples">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of training samples randomly sampled from positions with an according Group flag.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="minimum">
            <number>1000</number>
           </property>
@@ -469,6 +499,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_15">
         <item>
          <widget class="QLineEdit" name="neg_indicator">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The Group indicator in the plate mapping file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>neg</string>
           </property>
@@ -486,6 +519,9 @@
        <width>281</width>
        <height>23</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start training step&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Start feature training</string>
@@ -551,6 +587,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pb_plate_mapping_encode">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A plate mapping table file for which all containing positions are processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Browse</string>
           </property>
@@ -584,6 +623,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pb_ch5_input_encode">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The data for which features should be generated as previouly learned in the autoencoder training step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Browse</string>
           </property>
@@ -617,6 +659,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pb_autoencoder_model">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The learned autoencoder model given as the resulting autoencoder folder from the training step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Browse</string>
           </property>
@@ -635,29 +680,14 @@
        <height>23</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use the autoencoder from training step to produce feature representations of novel data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>Start feature generation</string>
      </property>
     </widget>
    </widget>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>750</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
   <action name="actionAdsf">
    <property name="text">
