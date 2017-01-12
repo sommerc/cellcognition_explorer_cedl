@@ -1,0 +1,23 @@
+FROM floydhub/dl-docker:cpu 
+MAINTAINER Christoph Sommer <christoph.sommer@imba.oeaw.ac.at>
+
+COPY cedl.py /root/
+COPY cedl_gui.py /root/
+COPY autoencoders.py /root/
+COPY utils.py /root/
+COPY cedlguimain.ui /root/
+COPY demo_data/CecogExCedlDemo_plate_subset.ch5 /root
+COPY demo_data/CecogExCedlDemo_plate_subset.txt /root
+
+RUN pip install https://github.com/Lasagne/Lasagne/archive/master.zip
+RUN pip install h5py --upgrade
+RUN pip install git+https://github.com/Cellh5/cellh5@master -t /root/
+RUN pip install nolearn
+RUN echo install | pip install git+https://github.com/lisa-lab/pylearn2@master -t /root/ --no-deps
+
+CMD  ["python", "/root/cedl_gui.py"]
+
+
+
+
+
