@@ -45,7 +45,7 @@ class MyWindow(QtGui.QMainWindow):
         super(MyWindow, self).__init__()
         uic.loadUi('cedlguimain.ui', self)
         self.setWindowIcon(QtGui.QIcon("cecog_explorer_icon_128x128.png"))
-        self.setWindowTitle("CellCogniton Explorer - Deep Learning for Features GUI")
+        self.setWindowTitle("CellCognition Explorer - Deep Learning for Features GUI")
         
         self.make_connections()
         self.setup_logging()
@@ -231,6 +231,7 @@ part is generated automatically by mirroring the specified encoder part</p>
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
+    app.setStyle(QtGui.QStyleFactory.create("plastique"))
     window = MyWindow()
     window.show()
     sys.exit(app.exec_())
