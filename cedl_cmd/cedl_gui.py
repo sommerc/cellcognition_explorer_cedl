@@ -19,9 +19,6 @@ class FuncThread(threading.Thread):
     def run(self):
         self._target(*self._args)
         self._finalizer()
- 
- 
-
 
 class QHandler(QObject, logging.Handler):
 
@@ -122,8 +119,6 @@ class MyWindow(QtGui.QMainWindow):
         fn = ''
         fn = QtGui.QFileDialog.getExistingDirectory(self, "Select a plate mapping file")
         self.autoencoder_model.setText(fn)
-        
-        
         
     def start_training(self):
         targs = cedl.argparse.Namespace()
