@@ -42,7 +42,7 @@ class MyWindow(QtGui.QMainWindow):
         super(MyWindow, self).__init__()
         uic.loadUi('cedlguimain.ui', self)
         self.setWindowIcon(QtGui.QIcon("cecog_explorer_icon_128x128.png"))
-        self.setWindowTitle("CellCognition Explorer - Deep Learning for Features GUI")
+        self.setWindowTitle("CellCognition Deep Learning")
         
         self.make_connections()
         self.setup_logging()
