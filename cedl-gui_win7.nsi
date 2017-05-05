@@ -38,11 +38,11 @@
 ; MUI end ------
  
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "CellCognitionExplorerGUI_win7-8_bundle_setup.exe"
+OutFile "CellCognitionExplorer_v1.0_docker_win7-8_bundle_setup.exe"
 InstallDir "$PROGRAMFILES\CellCognitionExplorer\"
 ShowInstDetails show
 
-Section "CellCognition Explorer Deep Learning GUI" SecMain
+Section "CellCognition Explorer Deep Learning Module" SecMain
   SetOutPath $INSTDIR
   SectionIn RO
   
@@ -52,20 +52,19 @@ Section "CellCognition Explorer Deep Learning GUI" SecMain
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\CellCognitionExplorer"
 
-    CreateShortCut "$SMPROGRAMS\CellCognitionExplorer\Deep Learning GUI.lnk" "$INSTDIR\cedl_gui_start.sh" "" "$INSTDIR\cecog_analyzer_icon.ico"
+    CreateShortCut "$SMPROGRAMS\CellCognitionExplorer\Deep Learning Module.lnk" "$INSTDIR\cedl_gui_start.sh" "" "$INSTDIR\cecog_analyzer_icon.ico"
 SectionEnd 
 
 Section "CellCognition Explorer GUI" SecMain2
   SetOutPath $INSTDIR
   SectionIn RO
   
-  FILE M:\www\software\explorer\files\CecogExplorer-1.0.1-demo_x86_64.exe
-  
+  FILE M:\www\software\explorer\files\CellCognitionExplorer-1.0.1_x86_64.exe
   
   SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\CellCognitionExplorer"
 
-    CreateShortCut "$SMPROGRAMS\CellCognitionExplorer\CellCognition Explorer GUI.lnk" "$INSTDIR\CecogExplorer-1.0.1-demo_x86_64.exe" "" ""
+    CreateShortCut "$SMPROGRAMS\CellCognitionExplorer\CellCognition Explorer.lnk" "$INSTDIR\CellCognitionExplorer-1.0.1_x86_64.exe" "" ""
 SectionEnd 
 
 
